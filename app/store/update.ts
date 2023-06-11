@@ -1,7 +1,8 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { FETCH_COMMIT_URL, FETCH_TAG_URL } from "../constant";
-import { requestUsage } from "../requests";
+import { FETCH_COMMIT_URL, StoreKey } from "../constant";
+import { api } from "../client/api";
+import { showToast } from "../components/ui-lib";
 
 export interface UpdateStore {
   lastUpdate: number;
@@ -15,8 +16,6 @@ export interface UpdateStore {
   getLatestVersion: (force?: boolean) => Promise<void>;
   updateUsage: (force?: boolean) => Promise<void>;
 }
-
-export const UPDATE_KEY = "chat-update";
 
 function queryMeta(key: string, defaultValue?: string): string {
   let ret: string;
@@ -55,10 +54,9 @@ export const useUpdateStore = create<UpdateStore>()(
         }));
 
         try {
-          // const data = await (await fetch(FETCH_TAG_URL)).json();
-          // const remoteId = data[0].name as string;
           const data = await (await fetch(FETCH_COMMIT_URL)).json();
-          const remoteId = (data[0].sha as string).substring(0, 7);
+          const remoteCommitTime = data[0].commit.committer.date;
+          const remoteId = new Date(remoteCommitTime).getTime().toString();
           set(() => ({
             remoteVersion: remoteId,
           }));
@@ -76,15 +74,22 @@ export const useUpdateStore = create<UpdateStore>()(
           lastUpdateUsage: Date.now(),
         }));
 
-        const usage = await requestUsage();
+        try {
+          const usage = await api.llm.usage();
 
-        if (usage) {
-          set(() => usage);
+          if (usage) {
+            set(() => ({
+              used: usage.used,
+              subscription: usage.total,
+            }));
+          }
+        } catch (e) {
+          console.error((e as Error).message);
         }
       },
     }),
     {
-      name: UPDATE_KEY,
+      name: StoreKey.Update,
       version: 1,
     },
   ),

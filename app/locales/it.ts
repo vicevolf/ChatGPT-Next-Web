@@ -31,6 +31,10 @@ const it: LocaleType = {
       return inputHints;
     },
     Send: "Invia",
+    Config: {
+      Reset: "Reset to Default",
+      SaveAs: "Save as Mask",
+    },
   },
   Export: {
     Title: "Tutti i messaggi",
@@ -61,25 +65,12 @@ const it: LocaleType = {
       ClearAll: "Cancella tutti i dati",
       ResetAll: "Resetta tutte le impostazioni",
       Close: "Chiudi",
-      ConfirmResetAll: {
-        Confirm: "Sei sicuro vuoi cancellare tutte le impostazioni?",
-      },
-      ConfirmClearAll: {
-        Confirm: "Sei sicuro vuoi cancellare tutte le chat?",
-      },
+      ConfirmResetAll: "Sei sicuro vuoi cancellare tutte le impostazioni?",
+      ConfirmClearAll: "Sei sicuro vuoi cancellare tutte le chat?",
     },
     Lang: {
-      Name: "Lingue",
-      Options: {
-        cn: "简体中文",
-        en: "English",
-        tw: "繁體中文",
-        es: "Español",
-        it: "Italiano",
-        tr: "Türkçe",
-        jp: "日本語",
-        de: "Deutsch",
-      },
+      Name: "Language", // ATTENTION: if you wanna add a new translation, please do not translate this value, leave it as `Language`
+      All: "Tutte le lingue",
     },
     Avatar: "Avatar",
     FontSize: {
@@ -97,7 +88,14 @@ const it: LocaleType = {
     SendKey: "Tasto invia",
     Theme: "Tema",
     TightBorder: "Schermo intero",
-    SendPreviewBubble: "Anteprima di digitazione",
+    SendPreviewBubble: {
+      Title: "Anteprima di digitazione",
+      SubTitle: "Preview markdown in bubble",
+    },
+    Mask: {
+      Title: "Mask Splash Screen",
+      SubTitle: "Show a mask splash screen before starting new chat",
+    },
     Prompt: {
       Disable: {
         Title: "Disabilita l'auto completamento",
@@ -111,6 +109,9 @@ const it: LocaleType = {
         Title: "Prompt List",
         Add: "Add One",
         Search: "Search Prompts",
+      },
+      EditModal: {
+        Title: "Edit Prompt",
       },
     },
     HistoryCount: {
@@ -151,7 +152,7 @@ const it: LocaleType = {
       Title: "Token massimi",
       SubTitle: "Lunghezza massima dei token in ingresso e dei token generati",
     },
-    PresencePenlty: {
+    PresencePenalty: {
       Title: "Penalità di presenza",
       SubTitle:
         "Un valore maggiore aumenta la probabilità di parlare di nuovi argomenti",
@@ -170,8 +171,6 @@ const it: LocaleType = {
       Summarize:
         "Riassumi brevemente la nostra discussione in 200 caratteri o meno per usarla come spunto per una futura conversazione.",
     },
-    ConfirmClearAll:
-      "Confermi la cancellazione di tutti i dati della chat e delle impostazioni?",
   },
   Copy: {
     Success: "Copiato sugli appunti",
@@ -182,6 +181,53 @@ const it: LocaleType = {
     Toast: (x: any) => `Con ${x} prompts contestuali`,
     Edit: "Prompt contestuali e di memoria",
     Add: "Aggiungi altro",
+  },
+  Plugin: {
+    Name: "Plugin",
+  },
+  Mask: {
+    Name: "Mask",
+    Page: {
+      Title: "Prompt Template",
+      SubTitle: (count: number) => `${count} prompt templates`,
+      Search: "Search Templates",
+      Create: "Create",
+    },
+    Item: {
+      Info: (count: number) => `${count} prompts`,
+      Chat: "Chat",
+      View: "View",
+      Edit: "Edit",
+      Delete: "Delete",
+      DeleteConfirm: "Confirm to delete?",
+    },
+    EditModal: {
+      Title: (readonly: boolean) =>
+        `Edit Prompt Template ${readonly ? "(readonly)" : ""}`,
+      Download: "Download",
+      Clone: "Clone",
+    },
+    Config: {
+      Avatar: "Bot Avatar",
+      Name: "Bot Name",
+    },
+  },
+  NewChat: {
+    Return: "Return",
+    Skip: "Skip",
+    Title: "Pick a Mask",
+    SubTitle: "Chat with the Soul behind the Mask",
+    More: "Find More",
+    NotShow: "Not Show Again",
+    ConfirmNoShow: "Confirm to disable？You can enable it in settings later.",
+  },
+
+  UI: {
+    Confirm: "Confirm",
+    Cancel: "Cancel",
+    Close: "Close",
+    Create: "Create",
+    Edit: "Edit",
   },
 };
 

@@ -31,6 +31,10 @@ const de: LocaleType = {
       return inputHints + ", / zum Durchsuchen von Prompts";
     },
     Send: "Senden",
+    Config: {
+      Reset: "Reset to Default",
+      SaveAs: "Save as Mask",
+    },
   },
   Export: {
     Title: "Alle Nachrichten",
@@ -61,25 +65,13 @@ const de: LocaleType = {
       ClearAll: "Alle Daten löschen",
       ResetAll: "Alle Einstellungen zurücksetzen",
       Close: "Schließen",
-      ConfirmResetAll: {
-        Confirm: "Möchten Sie wirklich alle Konfigurationen zurücksetzen?",
-      },
-      ConfirmClearAll: {
-        Confirm: "Möchten Sie wirklich alle Chats zurücksetzen?",
-      },
+      ConfirmResetAll:
+        "Möchten Sie wirklich alle Konfigurationen zurücksetzen?",
+      ConfirmClearAll: "Möchten Sie wirklich alle Chats zurücksetzen?",
     },
     Lang: {
       Name: "Language", // ATTENTION: if you wanna add a new translation, please do not translate this value, leave it as `Language`
-      Options: {
-        cn: "简体中文",
-        en: "English",
-        tw: "繁體中文",
-        es: "Español",
-        it: "Italiano",
-        tr: "Türkçe",
-        jp: "日本語",
-        de: "Deutsch",
-      },
+      All: "Alle Sprachen",
     },
     Avatar: "Avatar",
     FontSize: {
@@ -97,7 +89,14 @@ const de: LocaleType = {
     SendKey: "Senden-Taste",
     Theme: "Erscheinungsbild",
     TightBorder: "Enger Rahmen",
-    SendPreviewBubble: "Vorschau-Bubble senden",
+    SendPreviewBubble: {
+      Title: "Vorschau-Bubble senden",
+      SubTitle: "Preview markdown in bubble",
+    },
+    Mask: {
+      Title: "Mask Splash Screen",
+      SubTitle: "Show a mask splash screen before starting new chat",
+    },
     Prompt: {
       Disable: {
         Title: "Autovervollständigung deaktivieren",
@@ -111,6 +110,9 @@ const de: LocaleType = {
         Title: "Prompt List",
         Add: "Add One",
         Search: "Search Prompts",
+      },
+      EditModal: {
+        Title: "Edit Prompt",
       },
     },
     HistoryCount: {
@@ -151,7 +153,7 @@ const de: LocaleType = {
       Title: "Max Tokens", //Maximale Token
       SubTitle: "Maximale Anzahl der Anfrage- plus Antwort-Token",
     },
-    PresencePenlty: {
+    PresencePenalty: {
       Title: "Presence Penalty", //Anwesenheitsstrafe
       SubTitle:
         "Ein größerer Wert erhöht die Wahrscheinlichkeit, dass über neue Themen gesprochen wird",
@@ -171,8 +173,6 @@ const de: LocaleType = {
       Summarize:
         "Fassen Sie unsere Diskussion kurz in 200 Wörtern oder weniger zusammen, um sie als Pronpt für zukünftige Gespräche zu verwenden.",
     },
-    ConfirmClearAll:
-      "Bestätigen Sie, um alle Chat- und Einstellungsdaten zu löschen?",
   },
   Copy: {
     Success: "In die Zwischenablage kopiert",
@@ -183,6 +183,53 @@ const de: LocaleType = {
     Toast: (x: any) => `Mit ${x} Kontext-Prompts`,
     Edit: "Kontext- und Gedächtnis-Prompts",
     Add: "Hinzufügen",
+  },
+  Plugin: {
+    Name: "Plugin",
+  },
+  Mask: {
+    Name: "Mask",
+    Page: {
+      Title: "Prompt Template",
+      SubTitle: (count: number) => `${count} prompt templates`,
+      Search: "Search Templates",
+      Create: "Create",
+    },
+    Item: {
+      Info: (count: number) => `${count} prompts`,
+      Chat: "Chat",
+      View: "View",
+      Edit: "Edit",
+      Delete: "Delete",
+      DeleteConfirm: "Confirm to delete?",
+    },
+    EditModal: {
+      Title: (readonly: boolean) =>
+        `Edit Prompt Template ${readonly ? "(readonly)" : ""}`,
+      Download: "Download",
+      Clone: "Clone",
+    },
+    Config: {
+      Avatar: "Bot Avatar",
+      Name: "Bot Name",
+    },
+  },
+  NewChat: {
+    Return: "Return",
+    Skip: "Skip",
+    Title: "Pick a Mask",
+    SubTitle: "Chat with the Soul behind the Mask",
+    More: "Find More",
+    NotShow: "Not Show Again",
+    ConfirmNoShow: "Confirm to disable？You can enable it in settings later.",
+  },
+
+  UI: {
+    Confirm: "Confirm",
+    Cancel: "Cancel",
+    Close: "Close",
+    Create: "Create",
+    Edit: "Edit",
   },
 };
 
