@@ -496,6 +496,17 @@ const cn = {
           SubTitle: "样例：",
         },
       },
+      SiliconFlow: {
+        ApiKey: {
+          Title: "接口密钥",
+          SubTitle: "使用自定义硅基流动 API Key",
+          Placeholder: "硅基流动 API Key",
+        },
+        Endpoint: {
+          Title: "接口地址",
+          SubTitle: "样例：",
+        },
+      },
       Stability: {
         ApiKey: {
           Title: "接口密钥",
@@ -526,6 +537,17 @@ const cn = {
       CustomModel: {
         Title: "自定义模型名",
         SubTitle: "增加自定义模型可选项，使用英文逗号隔开",
+      },
+      AI302: {
+        ApiKey: {
+          Title: "接口密钥",
+          SubTitle: "使用自定义302.AI API Key",
+          Placeholder: "302.AI API Key",
+        },
+        Endpoint: {
+          Title: "接口地址",
+          SubTitle: "样例：",
+        },
       },
     },
 

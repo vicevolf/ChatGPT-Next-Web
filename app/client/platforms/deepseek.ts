@@ -1,11 +1,6 @@
 "use client";
 // azure and openai, using same models. so using same LLMApi.
-import {
-  ApiPath,
-  DEEPSEEK_BASE_URL,
-  DeepSeek,
-  REQUEST_TIMEOUT_MS,
-} from "@/app/constant";
+import { ApiPath, DEEPSEEK_BASE_URL, DeepSeek } from "@/app/constant";
 import {
   useAccessStore,
   useAppConfig,
@@ -13,7 +8,7 @@ import {
   ChatMessageTool,
   usePluginStore,
 } from "@/app/store";
-import { stream } from "@/app/utils/chat";
+import { streamWithThink } from "@/app/utils/chat";
 import {
   ChatOptions,
   getHeaders,
@@ -22,7 +17,11 @@ import {
   SpeechOptions,
 } from "../api";
 import { getClientConfig } from "@/app/config/client";
-import { getMessageTextContent } from "@/app/utils";
+import {
+  getMessageTextContent,
+  getMessageTextContentWithoutThinking,
+  getTimeoutMSByModel,
+} from "@/app/utils";
 import { RequestPayload } from "./openai";
 import { fetch } from "@/app/utils/stream";
 
@@ -67,8 +66,32 @@ export class DeepSeekApi implements LLMApi {
   async chat(options: ChatOptions) {
     const messages: ChatOptions["messages"] = [];
     for (const v of options.messages) {
-      const content = getMessageTextContent(v);
-      messages.push({ role: v.role, content });
+      if (v.role === "assistant") {
+        const content = getMessageTextContentWithoutThinking(v);
+        messages.push({ role: v.role, content });
+      } else {
+        const content = getMessageTextContent(v);
+        messages.push({ role: v.role, content });
+      }
+    }
+
+    // 检测并修复消息顺序，确保除system外的第一个消息是user
+    const filteredMessages: ChatOptions["messages"] = [];
+    let hasFoundFirstUser = false;
+
+    for (const msg of messages) {
+      if (msg.role === "system") {
+        // Keep all system messages
+        filteredMessages.push(msg);
+      } else if (msg.role === "user") {
+        // User message directly added
+        filteredMessages.push(msg);
+        hasFoundFirstUser = true;
+      } else if (hasFoundFirstUser) {
+        // After finding the first user message, all subsequent non-system messages are retained.
+        filteredMessages.push(msg);
+      }
+      // If hasFoundFirstUser is false and it is not a system message, it will be skipped.
     }
 
     const modelConfig = {
@@ -81,7 +104,7 @@ export class DeepSeekApi implements LLMApi {
     };
 
     const requestPayload: RequestPayload = {
-      messages,
+      messages: filteredMessages,
       stream: options.config.stream,
       model: modelConfig.model,
       temperature: modelConfig.temperature,
@@ -110,7 +133,7 @@ export class DeepSeekApi implements LLMApi {
       // make a fetch request
       const requestTimeoutId = setTimeout(
         () => controller.abort(),
-        REQUEST_TIMEOUT_MS,
+        getTimeoutMSByModel(options.config.model),
       );
 
       if (shouldStream) {
@@ -119,7 +142,7 @@ export class DeepSeekApi implements LLMApi {
           .getAsTools(
             useChatStore.getState().currentSession().mask?.plugin || [],
           );
-        return stream(
+        return streamWithThink(
           chatPath,
           requestPayload,
           getHeaders(),
@@ -132,8 +155,9 @@ export class DeepSeekApi implements LLMApi {
             const json = JSON.parse(text);
             const choices = json.choices as Array<{
               delta: {
-                content: string;
+                content: string | null;
                 tool_calls: ChatMessageTool[];
+                reasoning_content: string | null;
               };
             }>;
             const tool_calls = choices[0]?.delta?.tool_calls;
@@ -155,7 +179,36 @@ export class DeepSeekApi implements LLMApi {
                 runTools[index]["function"]["arguments"] += args;
               }
             }
-            return choices[0]?.delta?.content;
+            const reasoning = choices[0]?.delta?.reasoning_content;
+            const content = choices[0]?.delta?.content;
+
+            // Skip if both content and reasoning_content are empty or null
+            if (
+              (!reasoning || reasoning.length === 0) &&
+              (!content || content.length === 0)
+            ) {
+              return {
+                isThinking: false,
+                content: "",
+              };
+            }
+
+            if (reasoning && reasoning.length > 0) {
+              return {
+                isThinking: true,
+                content: reasoning,
+              };
+            } else if (content && content.length > 0) {
+              return {
+                isThinking: false,
+                content: content,
+              };
+            }
+
+            return {
+              isThinking: false,
+              content: "",
+            };
           },
           // processToolMessage, include tool_calls message and tool call results
           (
