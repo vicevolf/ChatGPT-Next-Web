@@ -24,7 +24,7 @@ import {
   getMessageTextContentWithoutThinking,
   getTimeoutMSByModel,
 } from "@/app/utils";
-import { fetch } from "@/app/utils/stream";
+import { fetch } from "@/app/utils";
 
 export interface OpenAIListModelResponse {
   object: string;

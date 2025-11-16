@@ -22,7 +22,7 @@ import {
 import { prettyObject } from "@/app/utils/format";
 import { getClientConfig } from "@/app/config/client";
 import { getMessageTextContent } from "@/app/utils";
-import { fetch } from "@/app/utils/stream";
+import { fetch } from "@/app/utils";
 
 import { RequestPayload } from "./openai";
 

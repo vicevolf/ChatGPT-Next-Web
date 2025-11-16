@@ -1,11 +1,5 @@
 import webpack from "webpack";
 
-const mode = process.env.BUILD_MODE ?? "standalone";
-console.log("[Next] build mode", mode);
-
-const disableChunk = !!process.env.DISABLE_CHUNK || mode === "export";
-console.log("[Next] build with chunk: ", !disableChunk);
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   webpack(config) {
@@ -14,21 +8,15 @@ const nextConfig = {
       use: ["@svgr/webpack"],
     });
 
-    if (disableChunk) {
-      config.plugins.push(
-        new webpack.optimize.LimitChunkCountPlugin({ maxChunks: 1 }),
-      );
-    }
-
     config.resolve.fallback = {
       child_process: false,
     };
 
     return config;
   },
-  output: mode,
+  output: "standalone",
   images: {
-    unoptimized: mode === "export",
+    unoptimized: false,
   },
   experimental: {
     forceSwcTransforms: true,
@@ -52,17 +40,16 @@ const CorsHeaders = [
   },
 ];
 
-if (mode !== "export") {
-  nextConfig.headers = async () => {
-    return [
-      {
-        source: "/api/:path*",
-        headers: CorsHeaders,
-      },
-    ];
-  };
+nextConfig.headers = async () => {
+  return [
+    {
+      source: "/api/:path*",
+      headers: CorsHeaders,
+    },
+  ];
+};
 
-  nextConfig.rewrites = async () => {
+nextConfig.rewrites = async () => {
     const ret = [
       // adjust for previous version directly using "/api/proxy/" as proxy base route
       // {
@@ -102,10 +89,9 @@ if (mode !== "export") {
       },
     ];
 
-    return {
-      beforeFiles: ret,
-    };
+  return {
+    beforeFiles: ret,
   };
-}
+};
 
 export default nextConfig;

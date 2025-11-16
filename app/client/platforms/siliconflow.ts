@@ -30,7 +30,7 @@ import {
 } from "@/app/utils";
 import { RequestPayload } from "./openai";
 
-import { fetch } from "@/app/utils/stream";
+import { fetch } from "@/app/utils";
 export interface SiliconFlowListModelResponse {
   object: string;
   data: Array<{

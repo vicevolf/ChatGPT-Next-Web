@@ -19,7 +19,7 @@ import {
 import { prettyObject } from "@/app/utils/format";
 import { getClientConfig } from "@/app/config/client";
 import { getMessageTextContent, getTimeoutMSByModel } from "@/app/utils";
-import { fetch } from "@/app/utils/stream";
+import { fetch } from "@/app/utils";
 
 export interface OpenAIListModelResponse {
   object: string;

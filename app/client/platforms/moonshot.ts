@@ -24,7 +24,7 @@ import {
 import { getClientConfig } from "@/app/config/client";
 import { getMessageTextContent } from "@/app/utils";
 import { RequestPayload } from "./openai";
-import { fetch } from "@/app/utils/stream";
+import { fetch } from "@/app/utils";
 
 export class MoonshotApi implements LLMApi {
   private disableListModels = true;

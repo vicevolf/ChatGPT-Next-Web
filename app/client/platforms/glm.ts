@@ -22,7 +22,7 @@ import {
   getTimeoutMSByModel,
 } from "@/app/utils";
 import { RequestPayload } from "./openai";
-import { fetch } from "@/app/utils/stream";
+import { fetch } from "@/app/utils";
 import { preProcessImageContent } from "@/app/utils/chat";
 
 interface BasePayload {

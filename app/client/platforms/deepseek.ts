@@ -23,7 +23,7 @@ import {
   getTimeoutMSByModel,
 } from "@/app/utils";
 import { RequestPayload } from "./openai";
-import { fetch } from "@/app/utils/stream";
+import { fetch } from "@/app/utils";
 
 export class DeepSeekApi implements LLMApi {
   private disableListModels = true;

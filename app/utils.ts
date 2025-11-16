@@ -7,8 +7,7 @@ import {
   REQUEST_TIMEOUT_MS_FOR_THINKING,
   ServiceProvider,
 } from "./constant";
-// import { fetch as tauriFetch, ResponseType } from "@tauri-apps/api/http";
-import { fetch as tauriStreamFetch } from "./utils/stream";
+
 import { VISION_MODEL_REGEXES, EXCLUDE_VISION_MODEL_REGEXES } from "./constant";
 import { useAccessStore } from "./store";
 import { ModelSize } from "./typing";
@@ -354,9 +353,6 @@ export function fetch(
   url: string,
   options?: Record<string, unknown>,
 ): Promise<any> {
-  if (window.__TAURI__) {
-    return tauriStreamFetch(url, options);
-  }
   return window.fetch(url, options);
 }
 

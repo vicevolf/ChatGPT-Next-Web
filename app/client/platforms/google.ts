@@ -27,7 +27,7 @@ import {
 import { preProcessImageContent } from "@/app/utils/chat";
 import { nanoid } from "nanoid";
 import { RequestPayload } from "./openai";
-import { fetch } from "@/app/utils/stream";
+import { fetch } from "@/app/utils";
 
 export class GeminiProApi implements LLMApi {
   path(path: string, shouldStream = false): string {

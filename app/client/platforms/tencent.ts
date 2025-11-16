@@ -26,7 +26,7 @@ import mapKeys from "lodash-es/mapKeys";
 import mapValues from "lodash-es/mapValues";
 import isArray from "lodash-es/isArray";
 import isObject from "lodash-es/isObject";
-import { fetch } from "@/app/utils/stream";
+import { fetch } from "@/app/utils";
 
 export interface OpenAIListModelResponse {
   object: string;

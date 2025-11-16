@@ -20,7 +20,7 @@ import { getClientConfig } from "@/app/config/client";
 import { getTimeoutMSByModel } from "@/app/utils";
 import { preProcessImageContent } from "@/app/utils/chat";
 import { RequestPayload } from "./openai";
-import { fetch } from "@/app/utils/stream";
+import { fetch } from "@/app/utils";
 
 export class XAIApi implements LLMApi {
   private disableListModels = true;
