@@ -6,8 +6,6 @@ const MIRRORF_FILE_URL = "http://raw.fgit.ml/";
 
 const RAW_CN_URL = "PlexPt/awesome-chatgpt-prompts-zh/main/prompts-zh.json";
 const CN_URL = MIRRORF_FILE_URL + RAW_CN_URL;
-const RAW_TW_URL = "PlexPt/awesome-chatgpt-prompts-zh/main/prompts-zh-TW.json";
-const TW_URL = MIRRORF_FILE_URL + RAW_TW_URL;
 const RAW_EN_URL = "f/awesome-chatgpt-prompts/main/prompts.csv";
 const EN_URL = MIRRORF_FILE_URL + RAW_EN_URL;
 const FILE = "./public/prompts.json";
@@ -41,25 +39,6 @@ async function fetchCN() {
   }
 }
 
-async function fetchTW() {
-  console.log("[Fetch] fetching tw prompts...");
-  try {
-    const response = await Promise.race([fetch(TW_URL), timeoutPromise(5000)]);
-    const raw = await response.json();
-    return raw
-      .map((v) => [v.act, v.prompt])
-      .filter(
-        (v) =>
-          v[0] &&
-          v[1] &&
-          ignoreWords.every((w) => !v[0].includes(w) && !v[1].includes(w)),
-      );
-  } catch (error) {
-    console.error("[Fetch] failed to fetch tw prompts", error);
-    return [];
-  }
-}
-
 async function fetchEN() {
   console.log("[Fetch] fetching en prompts...");
   try {
@@ -82,13 +61,13 @@ async function fetchEN() {
 }
 
 async function main() {
-  Promise.all([fetchCN(), fetchTW(), fetchEN()])
-    .then(([cn, tw, en]) => {
-      fs.writeFile(FILE, JSON.stringify({ cn, tw, en }));
+  Promise.all([fetchCN(), fetchEN()])
+    .then(([cn, en]) => {
+      fs.writeFile(FILE, JSON.stringify({ cn, en }));
     })
     .catch((e) => {
       console.error("[Fetch] failed to fetch prompts");
-      fs.writeFile(FILE, JSON.stringify({ cn: [], tw: [], en: [] }));
+      fs.writeFile(FILE, JSON.stringify({ cn: [], en: [] }));
     })
     .finally(() => {
       console.log("[Fetch] saved to " + FILE);
